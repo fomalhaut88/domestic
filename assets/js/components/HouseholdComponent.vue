@@ -25,7 +25,7 @@
     <div class="px-3 row text-center h5">
       <div class="col-lg py-2"><a href="#" @click="$refs.issuesManager.show()"><fa-icon icon="th" /> Issues</a></div>
       <div class="col-lg py-2"><a href="#" @click="$refs.marksManager.show()"><fa-icon icon="edit" /> Marks</a></div>
-      <div class="col-lg py-3"><a href="#" @click="updateHistoryAndLastMarkDates()"><fa-icon icon="refresh" /> Update history</a></div>
+      <div class="col-lg py-2"><a href="#" @click="updateHistoryAndLastMarkDates()"><fa-icon icon="refresh" /> Update history</a></div>
     </div>
 
     <issues-manager ref="issuesManager" />
@@ -56,7 +56,11 @@
         },
         methods: {
             plotHistoryChart() {
-                var chart = new Chart('householdHistoryChart', {
+                var canvas = document.getElementById('householdHistoryChart');
+                var ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                var chart = new Chart(ctx, {
                     type: 'line',
 
                     data: {
@@ -66,7 +70,7 @@
                             backgroundColor: 'rgb(0, 128, 255, 0.3)',
                             borderWidth: 2,
                             borderColor: 'rgb(0, 128, 255)',
-                            data: this.history.map(x => x.total ? (100 * x.count / x.total) : 0.0),
+                            data: this.history.map(x => x.total ? Math.round(100 * x.count / x.total) : 0.0),
                             pointRadius: 1,
                             lineTension: 0.25,
                         }]
@@ -88,9 +92,13 @@
 
             plotTodayChart() {
                 var last = this.history.length ? this.history[this.history.length - 1] : {};
-                var value = ((last.date == this.today) && last.total) ? (100 * last.count / last.total) : 0.0;
+                var value = ((last.date == this.today) && last.total) ? Math.round(100 * last.count / last.total) : 0.0;
 
-                var chart = new Chart('householdTodayChart', {
+                var canvas = document.getElementById('householdTodayChart');
+                var ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                var chart = new Chart(ctx, {
                     type: 'bar',
 
                     data: {
