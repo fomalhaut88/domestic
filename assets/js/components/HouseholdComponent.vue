@@ -35,7 +35,10 @@
 
 <script>
     import Chart from 'chart.js';
-    import { getRange, getMonthNumber, getDatesBetween, getMaxString, getMinString } from '../utils';
+    import {
+        getRange, getMonthNumber, getDatesBetween,
+        getMaxString, getMinString, recreateCanvas,
+    } from '../utils';
     import QueueUpdater from '../queue_updater';
 
     export default {
@@ -56,7 +59,7 @@
         },
         methods: {
             plotHistoryChart() {
-                var canvas = document.getElementById('householdHistoryChart');
+                var canvas = recreateCanvas('householdHistoryChart', 400);
                 var ctx = canvas.getContext('2d');
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -94,7 +97,7 @@
                 var last = this.history.length ? this.history[this.history.length - 1] : {};
                 var value = ((last.date == this.today) && last.total) ? Math.round(100 * last.count / last.total) : 0.0;
 
-                var canvas = document.getElementById('householdTodayChart');
+                var canvas = recreateCanvas('householdTodayChart', 400);
                 var ctx = canvas.getContext('2d');
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 

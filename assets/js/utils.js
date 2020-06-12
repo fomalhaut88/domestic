@@ -49,11 +49,26 @@ const getMinString = arr => {
 }
 
 
+const recreateCanvas = (canvasId, height) => {
+    var canvasOld = document.getElementById(canvasId);
+    var parent = canvasOld.parentElement;
+    parent.removeChild(canvasOld);
+
+    var canvasNew = document.createElement('canvas');
+    canvasNew.setAttribute("id", canvasId);
+    canvasNew.setAttribute("height", height);
+    parent.appendChild(canvasNew);
+
+    return canvasNew;
+}
+
+
 export {
     getRange,
     getMonthNumber,
     monthNumberAsString,
     getDatesBetween,
     getMaxString,
-    getMinString
+    getMinString,
+    recreateCanvas,
 };
