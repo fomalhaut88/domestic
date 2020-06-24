@@ -107,11 +107,13 @@ export default class Auth {
     }
 
     buildSignature(key, block) {
-        return this.wasm.build_signature(this.privateKey, key, block);
+        var data = key + block;
+        return this.wasm.build_signature(this.privateKey, data);
     }
 
     checkSignature(key, block, signature) {
-        return this.wasm.check_signature(this.publicKey, key, block, signature);
+        var data = key + block;
+        return this.wasm.check_signature(this.publicKey, data, signature);
     }
 
     buildSecretSignature(secret) {

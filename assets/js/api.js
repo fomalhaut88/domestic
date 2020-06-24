@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-const API_BASE_URL = 'https://hashstorage.fomalhaut.su/api/';
+const API_BASE_URL = 'https://hashstorage.fomalhaut.su/api/v1/';
 
 
 export default class Api {
@@ -20,6 +20,7 @@ export default class Api {
     list(callback) {
         this._http.post("list", {
             public_key: this._auth.publicKey,
+            data_group: "",
         }).then(response => {
             var data = response.data.map(item => this._extractData(item));
             callback(data);
@@ -29,6 +30,7 @@ export default class Api {
     get(key, callback, callbackError) {
         this._http.post("get", {
             public_key: this._auth.publicKey,
+            data_group: "",
             data_key: key,
         }).then(response => {
             var data = this._extractData(response.data);
@@ -50,8 +52,10 @@ export default class Api {
 
             this._http.post("save", {
                 public_key: this._auth.publicKey,
+                data_group: "",
                 data_key: key,
                 data_block: block,
+                data_version: "",
                 signature: signature,
                 secret_signature: secretSignature,
             }).then(response => {
@@ -69,6 +73,7 @@ export default class Api {
 
         this._http.post("get", {
             public_key: this._auth.publicKey,
+            data_group: "",
             data_key: key,
         }).then(response => {
             handler(response.data.secret, callback, callbackError);
@@ -80,6 +85,7 @@ export default class Api {
     delete(key, callback, callbackError) {
         this._http.post("get", {
             public_key: this._auth.publicKey,
+            data_group: "",
             data_key: key,
         }).then(response => {
             var secret = response.data.secret;
@@ -87,6 +93,7 @@ export default class Api {
 
             this._http.post("delete", {
                 public_key: this._auth.publicKey,
+                data_group: "",
                 data_key: key,
                 secret_signature: secretSignature,
             }).then(response => {
